@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: enter in the root dir
-        run: cd web-cloud-ynov/
+        run: |
+          cd web-cloud-ynov/
+          ls
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
