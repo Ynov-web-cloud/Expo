@@ -48,7 +48,7 @@ jobs:
       pages: write
       id-token: write
     needs: build_test
-    setps:
+    steps:
       - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2
