@@ -40,7 +40,7 @@ jobs:
           if-no-files-found: error
 
   deploy:
-    envrionment:
+    environment:
       name: github-pages
       url: ${{steps.deployment.output.page_url}}
     runs-on: ubuntu-latest
