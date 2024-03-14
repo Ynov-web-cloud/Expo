@@ -21,6 +21,7 @@ jobs:
 
       - name: npm ci, build and test
         run: npm i
+      - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
@@ -50,8 +51,7 @@ jobs:
     needs: build_test
     steps:
       - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v2
-      - name: Setup EAS
-    - name: Build app
-      run: eas build --platform android --non-interactive --no-wait
+        id: deployment
+        uses: actions/deploy-pages@v2
+      - name: Build app
+        run: eas build --platform android --non-interactive --no-wait
