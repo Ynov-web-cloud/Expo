@@ -3,16 +3,55 @@ on:
       branches: [ main ]
   pull_request:
       branches: [ master ]
+
 jobs:
   build_test:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         node-version: [20.X, 21.X]
+
     setps:
-      uses: actions/checkout@v2
-      name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: npm ci, build and test
+        run: npm i
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: build web app
+        run: npm run predeploy
+
+      - name: Setup pages
+        id: pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: dist
+          if-no-files-found: error
+
+  deploy:
+    envrionment:
+      name: github-pages
+      url: ${{steps.deployment.output.page_url}}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    needs: build_test
+    setps:
+      - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+      - name: Setup EAS
+    - name: Build app
+      run: eas build --platform android --non-interactive --no-wait
