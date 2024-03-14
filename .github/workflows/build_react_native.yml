@@ -25,11 +25,13 @@ jobs:
 
       - name: npm ci, build and test
         run: npm i package.json
+
       - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+
       - name: Build app
         run: eas build --platform android --non-interactive --no-wait
 
@@ -50,11 +52,15 @@ jobs:
     environment:
       name: github-pages
       url: ${{steps.deployment.output.page_url}}
+  
     runs-on: ubuntu-latest
+
     permissions:
       pages: write
       id-token: write
+
     needs: build_test
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
