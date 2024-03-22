@@ -35,12 +35,12 @@ jobs:
         run: npm i package.json
 
       - name: build web app
-        run: npm run predeploy
+        run: |
+          ls
+          npm run predeploy
 
       - name: 🚀 Build app
-        run: |
-          eas init
-          eas build --platform android --non-interactive --no-wait
+        run: eas build --platform android --non-interactive --no-wait
 
       - name: Setup pages
         id: pages
