@@ -5,7 +5,7 @@ on:
       branches: [ master ]
 
 jobs:
-  build_test:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -48,8 +48,9 @@ jobs:
 
       - name: Upload artifacts
         uses: actions/upload-pages-artifact@v2
+        run: cd web-cloud-ynov/
         with:
-          path: web-cloud-ynov/dist
+          path: dist
           if-no-files-found: error
 
   deploy:
@@ -63,7 +64,7 @@ jobs:
       pages: write
       id-token: write
 
-    needs: build_test
+    needs: build
 
     steps:
       - name: Deploy to GitHub Pages
