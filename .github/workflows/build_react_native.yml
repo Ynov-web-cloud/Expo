@@ -36,7 +36,6 @@ jobs:
         run: |
           cd web-cloud-ynov/
           npm run predeploy
-          ls ; echo "---------" ; ls dist/
 
       - name: 🚀Build app
         run: |
