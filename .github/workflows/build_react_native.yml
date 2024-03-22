@@ -14,10 +14,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: enter in the root dir
-        run: |
-          cd web-cloud-ynov/
-          ls
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -31,7 +27,7 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: 📦 Install dependencies
+      - name: 📦Install dependencies
         run: |
           cd web-cloud-ynov/
           npm i
@@ -40,8 +36,9 @@ jobs:
         run: |
           cd web-cloud-ynov/
           npm run predeploy
+          ls ; echo "---------" ; ls dist/
 
-      - name: 🚀 Build app
+      - name: 🚀Build app
         run: |
           cd web-cloud-ynov/
           eas build --platform android --non-interactive --no-wait
