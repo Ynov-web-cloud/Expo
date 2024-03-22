@@ -1,0 +1,71 @@
+on:
+  push:
+      branches: [ main ]
+  pull_request:
+      branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [21.X]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          #cache: npm
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦Install dependencies
+        run: |
+          cd web-cloud-ynov/
+          npm i
+
+      - name: build web app
+        run: |
+          cd web-cloud-ynov/
+          npm run predeploy
+
+      - name: 🚀Build app
+        run: |
+          cd web-cloud-ynov/
+          eas build --platform android --non-interactive --no-wait
+
+      - name: Setup pages
+        id: pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: web-cloud-ynov/dist
+          if-no-files-found: error
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.output.page_url}}
+  
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    needs: build
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
