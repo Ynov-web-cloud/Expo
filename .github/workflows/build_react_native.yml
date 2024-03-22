@@ -32,15 +32,19 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Install dependencies
-        run: npm i package.json
+        run: |
+          cd web-cloud-ynov/
+          npm i
 
       - name: build web app
         run: |
-          ls
+          cd web-cloud-ynov/
           npm run predeploy
 
       - name: 🚀 Build app
-        run: eas build --platform android --non-interactive --no-wait
+        run: |
+          cd web-cloud-ynov/
+          eas build --platform android --non-interactive --no-wait
 
       - name: Setup pages
         id: pages
