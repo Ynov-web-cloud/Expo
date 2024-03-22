@@ -13,18 +13,19 @@ jobs:
         node-version: [21.X]
 
     steps:
+      - name: 🏗 Setup repo
       - uses: actions/checkout@v2
+  
       - name: enter in the root dir
         run: |
           cd web-cloud-ynov/
           ls
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: npm ci, build and test
-        run: npm i package.json
+          cache: npm
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
@@ -32,7 +33,10 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Build app
+      - name: 📦 Install dependencies
+        run: npm i package.json
+
+      - name: 🚀 Build app
         run: eas build --platform android --non-interactive --no-wait
 
       - name: build web app
