@@ -1,8 +1,8 @@
 on:
   push:
-      branches: [ main ]
+    branches: [main]
   pull_request:
-      branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -56,7 +56,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{steps.deployment.output.page_url}}
-  
+
     runs-on: ubuntu-latest
 
     permissions:
