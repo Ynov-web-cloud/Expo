@@ -2,7 +2,6 @@
   "name": "web-cloud-ynov",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-  "homepage": "https://ynov-web-cloud.github.io/Expo/",
   "scripts": {
     "start": "expo start --port 8888",
     "android": "expo start --android",
